@@ -22,9 +22,17 @@ Two cleaned base tables were created first:
 - `Item_base` — item-level table used for revenue analysis
 
 These were then used to build aggregated reporting tables for Power BI.
+## Tools Used
+
+| Tool | Purpose |
+| --- | --- |
+| **Google BigQuery / SQL** | Data cleaning, transformation, funnel logic, aggregation |
+| **Power BI** | Dashboard design and business-facing visualization |
+| **Excel** | Reviewing exported tables and checking outputs |
+| **GitHub** | Project documentation and portfolio presentation |
 ## Key Findings
 
 ## Business Recommendations
-## Tools Used
+
 ## Files in This Repository
 ## What I Learned
