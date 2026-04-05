@@ -16,7 +16,7 @@ This project analyzes an e-commerce purchase funnel using SQL (BigQuery) and Pow
 
 The analysis is split into two parts:
 **Part 1:** overall ecommerce performance overview
-**Part 2:** Which device segment has the largest funnel leakage, at which step does the leakage happen, and what optimization would likely produce the biggest revenue impact?
+**Part 2:** identify the biggest funnel leak and recommend where to optimize first
 
 ## The final deliverables include:
 - cleaned SQL tables built from the source ecommerce dataset
