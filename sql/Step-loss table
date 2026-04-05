@@ -1,0 +1,36 @@
+CREATE OR REPLACE TABLE `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_step_loss` AS
+WITH device_funnel AS (
+  SELECT * 
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_device_summary`
+)
+
+SELECT
+  device_category,
+  'view_item -> add_to_cart' AS funnel_step,
+  view_item_sessions AS from_sessions,
+  add_to_cart_sessions AS to_sessions,
+  loss_view_to_cart AS dropoff_sessions,
+  SAFE_DIVIDE(loss_view_to_cart, view_item_sessions) AS dropoff_rate
+FROM device_funnel
+
+UNION ALL
+
+SELECT
+  device_category,
+  'add_to_cart -> begin_checkout' AS funnel_step,
+  add_to_cart_sessions AS from_sessions,
+  begin_checkout_sessions AS to_sessions,
+  loss_cart_to_checkout AS dropoff_sessions,
+  SAFE_DIVIDE(loss_cart_to_checkout, add_to_cart_sessions) AS dropoff_rate
+FROM device_funnel
+
+UNION ALL
+
+SELECT
+  device_category,
+  'begin_checkout -> purchase' AS funnel_step,
+  begin_checkout_sessions AS from_sessions,
+  purchase_sessions AS to_sessions,
+  loss_checkout_to_purchase AS dropoff_sessions,
+  SAFE_DIVIDE(loss_checkout_to_purchase, begin_checkout_sessions) AS dropoff_rate
+FROM device_funnel;
