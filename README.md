@@ -1,6 +1,18 @@
 # Ecommerce Funnel Analysis | SQL + Power BI
-Bill Li
+## How This Repo Is Organized
+
+This repository is organized so readers can quickly find the SQL logic, dashboard output, and supporting project assets. If you want to review the project from start to finish, start with the README summary, then open the SQL files, and finally view the dashboard screenshots or Power BI file.
+
+| Section | What it contains |
+| --- | --- |
+| [`README.md`](./README.md) | Project overview, business question, key findings, and final recommendations |
+| [`sql/`](./sql/) | SQL scripts used for data cleaning, funnel table creation, and Part 1 / Part 2 analysis |
+| [`dashboards/`](./dashboards/) | Power BI dashboard file used to build the final visual report |
+| [`images/`](./images/) | Dashboard screenshots used in the README |
+| [`exports/`](./exports/) | Exported tables or CSV files used to review results outside BigQuery / Power BI |
+
 ## Project Overview
+
 This project analyzes an e-commerce purchase funnel using SQL (BigQuery) and Power BI to identify where potential purchasers are being lost from start to finish, and user shopping device prioritization to improve conversion and revenue. I chose a funnel analysis approach because it is important to understand how users move through the purchase journey and where they drop off before checking out. Funnel analysis is especially useful here because it makes it possible to measure step-by-step abandonment and connect those losses to business actions, which is exactly how e-commerce companies uses funnel and purchase-journey reporting. 
 
 The analysis is split into two parts:
@@ -8,13 +20,21 @@ The analysis is split into two parts:
 **Part 2:** funnel optimization analysis focused on conversion loss and device prioritization
 
 The final deliverables include:
+- cleaned SQL tables built from the source ecommerce dataset
+- Power BI dashboards with an overview page and a funnel optimization page
+- business recommendations based on funnel drop-off and device-level revenue opportunity
 ## Business Question
 "Which step causes the greatest loss of potential purchasers, and which device segment should the business prioritize to improve conversion and revenue?"
 
 I chose this business question because it moves the project beyond descriptive KPI reporting and toward a more practical business decision. Instead of only asking how the store is performing overall, this question asks where the conversion process is breaking down and where optimization would likely create the biggest return, which is the kind of question funnel analysis is designed to answer.
 ## Dashboard
+
+### Page 1 — Ecommerce Overview
 <img width="1428" height="804" alt="image" src="https://github.com/user-attachments/assets/dbcaecef-9efd-4e77-ad50-2d3c3b5ff1fc" />
+
+### Page 2 — Funnel Optimization
 <img width="1421" height="799" alt="image" src="https://github.com/user-attachments/assets/fdc6b3b0-b88e-48ad-8d57-0546bfa17c3a" />
+
 ## Key Metrics Tracked
 
 - Product view sessions
@@ -28,6 +48,7 @@ I chose this business question because it moves the project beyond descriptive K
 - Estimated revenue uplift by device
 
 ## Key Findings
+
 The funnel analysis suggests that the business is losing most potential customers before they demonstrate serious purchase intent.
 
 The biggest weakness is at the point where users move from:
@@ -46,6 +67,7 @@ This does not explicitly prove the exact cause on its own, but it clearly shows 
 
 ---
 ## Business Recommendations
+
 ### 1. Prioritize desktop product-page optimization
 The desktop platform should be the first segment targeted because it combines:
 - the highest traffic volume
@@ -68,11 +90,12 @@ A useful next step would be to segment desktop traffic further by:
 This would help identify which parts of desktop traffic are driving the largest add-to-cart losses.
 ## Final Answer to the Business Question
 
-The greatest loss of potential purchasers occurs at the **View Item → Add to Cart** step, where 61,874 sessions are lost, representing a 80.3% drop-off rate.
+The greatest loss of potential purchasers occurs at the **View Item → Add to Cart** step, where 61,874 sessions are lost, representing an 80.3% drop-off rate.
 
 The business should prioritize the **desktop** segment because it has the highest traffic and revenue base but underperforms mobile on conversion, creating the largest estimated revenue recovery opportunity at roughly 9.15K.
 
 ## Dataset
+
 This project uses an ecommerce event dataset exported to **Google BigQuery** and transformed into cleaned analysis tables.
 Two cleaned base tables were created first:
 
@@ -81,9 +104,14 @@ Two cleaned base tables were created first:
 
 These were then used to build aggregated reporting tables for Power BI.
 ## Tools Used
+
 | Tool | Purpose |
 | --- | --- |
-| **Google BigQuery / SQL** | Data cleaning, transformation, funnel logic, aggregation |
-| **Power BI** | Dashboard design and business-facing visualization |
-| **Excel** | Reviewing exported tables and checking outputs |
-| **GitHub** | Project documentation and portfolio presentation |
+| Google BigQuery / SQL | Data cleaning, transformation, funnel logic, aggregation |
+| Power BI | Dashboard design and business-facing visualization |
+| Excel | Reviewing exported tables and checking outputs |
+| GitHub | Project documentation and portfolio presentation |
+
+## Author
+
+Bill Li
