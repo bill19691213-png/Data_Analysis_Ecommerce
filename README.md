@@ -7,7 +7,6 @@ This repository is organized so readers can quickly find the SQL logic, dashboar
 | --- | --- |
 | [`README.md`](./README.md) | Project overview, business question, key findings, and final recommendations |
 | [`sql/`](./sql/) | SQL scripts used for data cleaning, funnel table creation, and Part 1 / Part 2 analysis |
-| [`dashboards/`](./dashboards/) | Power BI dashboard file used to build the final visual report |
 | [`images/`](./images/) | Dashboard screenshots used in the README |
 | [`exports/`](./exports/) | Exported tables or CSV files used to review results outside BigQuery / Power BI |
 
