@@ -1,0 +1,10 @@
+device_category,funnel_step,from_sessions,to_sessions,dropoff_sessions,dropoff_rate
+tablet,add_to_cart -> begin_checkout,321,113,208,0.6479750778816199
+desktop,add_to_cart -> begin_checkout,8766,3031,5735,0.65423226100844167
+mobile,add_to_cart -> begin_checkout,6059,2149,3910,0.645321010067668
+desktop,begin_checkout -> purchase,3031,1550,1481,0.488617617947872
+mobile,begin_checkout -> purchase,2149,1140,1009,0.46952070730572359
+tablet,begin_checkout -> purchase,113,61,52,0.46017699115044247
+desktop,view_item -> add_to_cart,44819,8766,36053,0.80441330685646717
+mobile,view_item -> add_to_cart,30501,6059,24442,0.80135077538441357
+tablet,view_item -> add_to_cart,1700,321,1379,0.81117647058823528
