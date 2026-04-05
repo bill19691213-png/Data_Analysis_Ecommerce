@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE `your_project.your_dataset.funnel_device_summary` AS
+CREATE OR REPLACE TABLE `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_device_summary` AS
 WITH session_steps AS (
   SELECT
     session_id,
@@ -8,7 +8,7 @@ WITH session_steps AS (
     MIN(IF(is_add_to_cart = 1, event_ts, NULL)) AS add_to_cart_ts,
     MIN(IF(is_begin_checkout = 1, event_ts, NULL)) AS begin_checkout_ts,
     MIN(IF(is_purchase = 1, event_ts, NULL)) AS purchase_ts
-  FROM `your_project.your_dataset.Event_base`
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.Event_base`
   WHERE session_id IS NOT NULL
   GROUP BY session_id
 ),
@@ -17,7 +17,7 @@ session_revenue AS (
   SELECT
     session_id,
     SUM(IF(event_name = 'purchase', item_revenue, 0)) AS session_revenue
-  FROM `your_project.your_dataset.Item_base`
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.Item_base`
   WHERE session_id IS NOT NULL
   GROUP BY session_id
 ),
