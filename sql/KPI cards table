@@ -1,0 +1,43 @@
+CREATE OR REPLACE TABLE `project-cf626adc-1290-4ce9-aae.Ecommerce.part2_kpi_cards` AS
+WITH top_step AS (
+  SELECT
+    funnel_step AS biggest_leak_step,
+    total_dropoff_sessions AS biggest_leak_sessions,
+    overall_dropoff_rate AS biggest_leak_rate
+  FROM (
+    SELECT
+      funnel_step,
+      SUM(dropoff_sessions) AS total_dropoff_sessions,
+      SAFE_DIVIDE(SUM(dropoff_sessions), SUM(from_sessions)) AS overall_dropoff_rate
+    FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_step_loss`
+    GROUP BY funnel_step
+  )
+  ORDER BY total_dropoff_sessions DESC
+  LIMIT 1
+),
+
+top_device AS (
+  SELECT
+    device_category AS priority_device,
+    estimated_revenue_uplift
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.device_priority`
+  ORDER BY estimated_revenue_uplift DESC, revenue DESC
+  LIMIT 1
+),
+
+overall_conv AS (
+  SELECT
+    SAFE_DIVIDE(SUM(purchase_sessions), SUM(view_item_sessions)) AS overall_view_to_purchase_rate
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_device_summary`
+)
+
+SELECT
+  t.biggest_leak_step,
+  t.biggest_leak_sessions,
+  t.biggest_leak_rate,
+  d.priority_device,
+  d.estimated_revenue_uplift,
+  o.overall_view_to_purchase_rate
+FROM top_step t
+CROSS JOIN top_device d
+CROSS JOIN overall_conv o;
