@@ -18,7 +18,7 @@ The analysis is split into two parts:
 **Part 1:** overall ecommerce performance overview
 **Part 2:** funnel optimization analysis focused on conversion loss and device prioritization
 
-The final deliverables include:
+## The final deliverables include:
 - cleaned SQL tables built from the source ecommerce dataset
 - Power BI dashboards with an overview page and a funnel optimization page
 - business recommendations based on funnel drop-off and device-level revenue opportunity
