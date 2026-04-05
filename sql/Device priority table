@@ -1,0 +1,33 @@
+CREATE OR REPLACE TABLE `project-cf626adc-1290-4ce9-aae.Ecommerce.device_priority` AS
+WITH device_summary AS (
+  SELECT
+    device_category,
+    view_item_sessions,
+    purchase_sessions,
+    revenue,
+    avg_order_value,
+    overall_view_to_purchase_rate
+  FROM `project-cf626adc-1290-4ce9-aae.Ecommerce.funnel_device_summary`
+),
+
+best_device AS (
+  SELECT
+    MAX(overall_view_to_purchase_rate) AS best_conversion_rate
+  FROM device_summary
+)
+
+SELECT
+  d.device_category,
+  d.view_item_sessions,
+  d.purchase_sessions,
+  d.revenue,
+  d.avg_order_value,
+  d.overall_view_to_purchase_rate,
+  b.best_conversion_rate,
+  b.best_conversion_rate - d.overall_view_to_purchase_rate AS conversion_gap_to_best,
+  d.view_item_sessions
+    * GREATEST(b.best_conversion_rate - d.overall_view_to_purchase_rate, 0)
+    * d.avg_order_value AS estimated_revenue_uplift
+FROM device_summary d
+CROSS JOIN best_device b
+ORDER BY estimated_revenue_uplift DESC, revenue DESC;
