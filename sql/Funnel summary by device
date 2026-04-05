@@ -1,0 +1,77 @@
+CREATE OR REPLACE TABLE `your_project.your_dataset.funnel_device_summary` AS
+WITH session_steps AS (
+  SELECT
+    session_id,
+    ANY_VALUE(device_category) AS device_category,
+
+    MIN(IF(is_view_item = 1, event_ts, NULL)) AS view_item_ts,
+    MIN(IF(is_add_to_cart = 1, event_ts, NULL)) AS add_to_cart_ts,
+    MIN(IF(is_begin_checkout = 1, event_ts, NULL)) AS begin_checkout_ts,
+    MIN(IF(is_purchase = 1, event_ts, NULL)) AS purchase_ts
+  FROM `your_project.your_dataset.Event_base`
+  WHERE session_id IS NOT NULL
+  GROUP BY session_id
+),
+
+session_revenue AS (
+  SELECT
+    session_id,
+    SUM(IF(event_name = 'purchase', item_revenue, 0)) AS session_revenue
+  FROM `your_project.your_dataset.Item_base`
+  WHERE session_id IS NOT NULL
+  GROUP BY session_id
+),
+
+closed_funnel AS (
+  SELECT
+    s.session_id,
+    s.device_category,
+    COALESCE(r.session_revenue, 0) AS session_revenue,
+
+    view_item_ts IS NOT NULL AS reached_view_item,
+
+    view_item_ts IS NOT NULL
+      AND add_to_cart_ts IS NOT NULL
+      AND add_to_cart_ts >= view_item_ts AS reached_add_to_cart,
+
+    view_item_ts IS NOT NULL
+      AND add_to_cart_ts IS NOT NULL
+      AND add_to_cart_ts >= view_item_ts
+      AND begin_checkout_ts IS NOT NULL
+      AND begin_checkout_ts >= add_to_cart_ts AS reached_begin_checkout,
+
+    view_item_ts IS NOT NULL
+      AND add_to_cart_ts IS NOT NULL
+      AND add_to_cart_ts >= view_item_ts
+      AND begin_checkout_ts IS NOT NULL
+      AND begin_checkout_ts >= add_to_cart_ts
+      AND purchase_ts IS NOT NULL
+      AND purchase_ts >= begin_checkout_ts AS reached_purchase
+  FROM session_steps s
+  LEFT JOIN session_revenue r
+    ON s.session_id = r.session_id
+)
+
+SELECT
+  device_category,
+  COUNTIF(reached_view_item) AS view_item_sessions,
+  COUNTIF(reached_add_to_cart) AS add_to_cart_sessions,
+  COUNTIF(reached_begin_checkout) AS begin_checkout_sessions,
+  COUNTIF(reached_purchase) AS purchase_sessions,
+
+  COUNTIF(reached_view_item) - COUNTIF(reached_add_to_cart) AS loss_view_to_cart,
+  COUNTIF(reached_add_to_cart) - COUNTIF(reached_begin_checkout) AS loss_cart_to_checkout,
+  COUNTIF(reached_begin_checkout) - COUNTIF(reached_purchase) AS loss_checkout_to_purchase,
+
+  SAFE_DIVIDE(COUNTIF(reached_add_to_cart), COUNTIF(reached_view_item)) AS view_to_cart_rate,
+  SAFE_DIVIDE(COUNTIF(reached_begin_checkout), COUNTIF(reached_add_to_cart)) AS cart_to_checkout_rate,
+  SAFE_DIVIDE(COUNTIF(reached_purchase), COUNTIF(reached_begin_checkout)) AS checkout_to_purchase_rate,
+  SAFE_DIVIDE(COUNTIF(reached_purchase), COUNTIF(reached_view_item)) AS overall_view_to_purchase_rate,
+
+  SUM(IF(reached_purchase, session_revenue, 0)) AS revenue,
+  SAFE_DIVIDE(SUM(IF(reached_purchase, session_revenue, 0)), COUNTIF(reached_purchase)) AS avg_order_value,
+  SAFE_DIVIDE(SUM(IF(reached_purchase, session_revenue, 0)), COUNTIF(reached_view_item)) AS revenue_per_view_session
+FROM closed_funnel
+GROUP BY device_category
+ORDER BY revenue DESC;
+2) Step-loss table
