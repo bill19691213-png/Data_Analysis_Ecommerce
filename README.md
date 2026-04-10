@@ -92,6 +92,10 @@ This would help identify which parts of desktop traffic are driving the largest 
 The greatest loss of potential purchasers occurs at the **View Item → Add to Cart** step, where 61,874 sessions are lost, representing an 80.3% drop-off rate.
 
 The business should prioritize the **desktop** segment because it has the highest traffic and revenue base but underperforms mobile on conversion, creating the largest estimated revenue recovery opportunity at roughly 9.15K.
+## Business Decision Layer
+
+
+
 
 ## Dataset
 
